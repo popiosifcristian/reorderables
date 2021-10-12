@@ -278,7 +278,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
     if (_draggingFeedbackSize == null) {
       return Size(0, 0);
     }
-    return _draggingFeedbackSize! + Offset(_dropAreaMargin, _dropAreaMargin);
+    return _draggingFeedbackSize!;
 //    double dropAreaWithoutMargin;
 //    switch (widget.direction) {
 //      case Axis.horizontal:
@@ -524,8 +524,9 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
         }
         semanticsActions[CustomSemanticsAction(label: reorderItemAfter)] =
             moveAfter;
-        semanticsActions[CustomSemanticsAction(
-            label: localizations.reorderItemToEnd)] = moveToEnd;
+        semanticsActions[
+                CustomSemanticsAction(label: localizations.reorderItemToEnd)] =
+            moveToEnd;
       }
 
       // We pass toWrap with a GlobalKey into the Draggable so that when a list
@@ -633,7 +634,6 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
                         opacity: 0,
                         child: Container(width: 0, height: 0, child: toWrap))),
                 //ConstrainedBox(constraints: contentConstraints),//SizedBox(),
-                dragAnchor: DragAnchor.child,
                 onDragStarted: onDragStarted,
                 // When the drag ends inside a DragTarget widget, the drag
                 // succeeds, and we reorder the widget into position appropriately.
@@ -650,6 +650,15 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
                 data: index,
                 ignoringFeedbackSemantics: false,
                 feedback: feedbackBuilder,
+                dragAnchorStrategy: (_, __, position) {
+                  final RenderBox renderObject =
+                      context.findRenderObject()! as RenderBox;
+                  var local = renderObject.globalToLocal(position);
+                  var size = renderObject.size;
+                  var middle = size.width / 2;
+                  double dx = local.dx > middle ? 150 : local.dx;
+                  return Offset(dx, 0);
+                },
                 // Wrap toWrapWithSemantics with a widget that supports HitTestBehavior
                 // to make sure the whole toWrapWithSemantics responds to pointer events, i.e. dragging
                 child: MetaData(
@@ -660,7 +669,6 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
                     child: Opacity(
                         opacity: 0,
                         child: Container(width: 0, height: 0, child: toWrap))),
-                dragAnchor: DragAnchor.child,
                 onDragStarted: onDragStarted,
                 // When the drag ends inside a DragTarget widget, the drag
                 // succeeds, and we reorder the widget into position appropriately.
@@ -922,17 +930,7 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
 
   Widget defaultBuildDraggableFeedback(
       BuildContext context, BoxConstraints constraints, Widget child) {
-    return Transform(
-      transform: Matrix4.rotationZ(0),
-      alignment: FractionalOffset.topLeft,
-      child: Material(
-        child:
-            Card(child: ConstrainedBox(constraints: constraints, child: child)),
-        elevation: 6.0,
-        color: Colors.transparent,
-        borderRadius: BorderRadius.zero,
-      ),
-    );
+    return SizedBox();
   }
 }
 
