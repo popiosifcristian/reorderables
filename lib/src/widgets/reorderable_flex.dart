@@ -7,9 +7,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-import './reorderable_widget.dart';
 import './passthrough_overlay.dart';
 import './reorderable_mixin.dart';
+import './reorderable_widget.dart';
 import './typedefs.dart';
 
 /// Reorderable (drag and drop) version of [Flex], a widget that displays its
@@ -226,9 +226,6 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
   // the currently dragging widget, such as when it first builds.
 //  static const double _defaultDropAreaExtent = 1.0;
 
-  // The additional margin to place around a computed drop area.
-  static const double _dropAreaMargin = 0.0;
-
   // How long an animation to reorder an element in the list takes.
   late Duration _reorderAnimationDuration;
 
@@ -250,7 +247,6 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
   // The member of widget.children currently being dragged.
   //
   // Null if no drag is underway.
-  Key? _dragging;
   Widget? _draggingWidget;
 
   // The last computed size of the feedback widget being dragged.
@@ -440,7 +436,6 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
     void onDragStarted() {
       setState(() {
         _draggingWidget = toWrap;
-        _dragging = toWrap.key;
         _dragStartIndex = index;
         _ghostIndex = index;
         _currentIndex = index;
@@ -462,8 +457,6 @@ class _ReorderableFlexContentState extends State<_ReorderableFlexContent>
       // specifications.
       _ghostController.reverse(from: 0.1);
       _entranceController.reverse(from: 0);
-
-      _dragging = null;
     }
 
     void reorder(int startIndex, int endIndex) {
