@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:reorderables/reorderables.dart';
 
 class TableExample extends StatefulWidget {
@@ -26,7 +25,7 @@ class _TableExampleState extends State<TableExample> {
     Widget _textWithPadding(String text) {
       return Padding(
         padding: EdgeInsets.symmetric(vertical: 4),
-        child: Text(text, textScaleFactor: 1.1),
+        child: Text(text),
       );
     }
 
@@ -50,16 +49,15 @@ class _TableExampleState extends State<TableExample> {
   @override
   Widget build(BuildContext context) {
     var headerRow = ReorderableTableRow(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text('Name', textScaleFactor: 1.5),
-        Text('Math', textScaleFactor: 1.5),
-        Text('Science', textScaleFactor: 1.5),
-        Text('Physics', textScaleFactor: 1.5),
-        Text('Sports', textScaleFactor: 1.5)
-      ]
-    );
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text('Name'),
+          Text('Math'),
+          Text('Science'),
+          Text('Physics'),
+          Text('Sports')
+        ]);
 
     void _onReorder(int oldIndex, int newIndex) {
       setState(() {
@@ -74,7 +72,8 @@ class _TableExampleState extends State<TableExample> {
       onReorder: _onReorder,
       onNoReorder: (int index) {
         //this callback is optional
-        debugPrint('${DateTime.now().toString().substring(5, 22)} reorder cancelled. index:$index');
+        debugPrint(
+            '${DateTime.now().toString().substring(5, 22)} reorder cancelled. index:$index');
       },
     );
   }
