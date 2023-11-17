@@ -13,8 +13,8 @@ import 'package:flutter/rendering.dart';
 import 'package:reorderables/reorderables.dart';
 
 import './basic.dart';
-import './typedefs.dart';
 import './reorderable_mixin.dart';
+import './typedefs.dart';
 
 int _kDefaultSemanticIndexCallback(Widget _, int localIndex) => localIndex;
 
@@ -383,12 +383,11 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
       _attachedScrollPosition = null;
     }
 
-    _scrollController = widget.controller ??
-        PrimaryScrollController.of(context) ??
-        ScrollController();
+    _scrollController =
+        widget.controller ?? PrimaryScrollController.of(context);
 
     _attachedScrollPosition =
-        _scrollController.hasClients ? null : Scrollable.of(context)?.position;
+        _scrollController.hasClients ? null : Scrollable.of(context).position;
 
     if (_attachedScrollPosition != null) {
       _scrollController.attach(_attachedScrollPosition!);
@@ -498,7 +497,7 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
     if (_scrolling) return;
     final RenderObject contextObject = context.findRenderObject()!;
     final RenderAbstractViewport viewport =
-        RenderAbstractViewport.of(contextObject)!;
+        RenderAbstractViewport.of(contextObject);
 
 //    if (_scrollController.positions.isEmpty) {
 //      debugPrint('${DateTime.now().toString().substring(5, 22)} reorderable_sliver.dart(537) $this._scrollTo: empty pos');
@@ -671,8 +670,8 @@ class _ReorderableSliverListState extends State<ReorderableSliverList>
       // before index+2, which is after the space at index+1.
       void moveAfter() => reorder(index, index + 2);
 
-      final MaterialLocalizations localizations =
-          MaterialLocalizations.of(context);
+      final WidgetsLocalizations localizations =
+          WidgetsLocalizations.of(context);
 
       if (index > 0) {
         semanticsActions[CustomSemanticsAction(
